@@ -7,6 +7,7 @@ interface Request {
   email: string;
   password: string;
 }
+
 class CreateUserService {
   public async execute({ name, email, password }: Request): Promise<User> {
     const usersRepository = getRepository(User);
@@ -17,6 +18,10 @@ class CreateUserService {
 
     if (checkUserExists) {
       throw new Error('Email adress already used.');
+    }
+
+    if (password === '') {
+      throw new Error('Password Field Cannot be empty.');
     }
 
     const hashedPassword = await hash(password, 8);
